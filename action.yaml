@@ -1,0 +1,36 @@
+name: enable auto-merge
+description: Enable auto-merge
+inputs:
+  pr_number:
+    required: true
+  merge_method:
+    required: false
+    default: merge
+  gh_token:
+    required: false
+  gh_app_id:
+    required: false
+  gh_app_private_key:
+    required: false
+runs:
+  using: composite
+  steps:
+    - shell: bash
+      run: |
+        if [ "$MERGE_METHOD" = merge ] || [ "$MERGE_METHOD" = squash ] || [ "$MERGE_METHOD" = rebase ]; then
+          exit 0
+        fi
+        echo "::error :: inputs.merge_method must be either merge, squash, and rebase."
+        exit 1
+      env:
+        MERGE_METHOD: ${{inputs.merge_method}}
+    - uses: suzuki-shunsuke/github-token-action@a058de0a42e494414cf4c112436d663a06fd16c0 # v0.1.0
+      id: token
+      with:
+        github_token: ${{inputs.gh_token}}
+        github_app_id: ${{inputs.gh_app_id}}
+        github_app_private_key: ${{inputs.gh_app_private_key}}
+    - run: gh -R "$GITHUB_REPOSITORY" pr merge --${{inputs.merge_method}} --auto --delete-branch "$PR_NUMBER"
+      env:
+        GITHUB_TOKEN: ${{steps.token.outputs.token}}
+        PR_NUMBER: ${{inputs.pr_number}}
