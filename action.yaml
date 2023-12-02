@@ -37,7 +37,7 @@ runs:
           }
         github_app_repositories: >-
           [
-            "${{github.event.repository.name}}",
+            "${{github.event.repository.name}}"
           ]
     - run: gh -R "$GITHUB_REPOSITORY" pr merge --${{inputs.merge_method}} --auto --delete-branch "$PR_NUMBER"
       env:
