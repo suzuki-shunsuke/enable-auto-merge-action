@@ -29,7 +29,7 @@ runs:
       with:
         github_token: ${{inputs.github_token}}
         github_app_id: ${{inputs.github_app_id}}
-        github_app_private_key: ${{inputs.gh_app_private_key}}
+        github_app_private_key: ${{inputs.github_app_private_key}}
         github_app_permissions: >-
           {
             "contents": "write",
