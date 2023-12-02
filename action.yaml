@@ -33,7 +33,7 @@ runs:
         github_app_permissions: >-
           {
             "contents": "write",
-            "pull-requests": "write"
+            "pull_requests": "write"
           }
         github_app_repositories: >-
           [
