@@ -6,11 +6,11 @@ inputs:
   merge_method:
     required: false
     default: merge
-  gh_token:
+  github_token:
     required: false
-  gh_app_id:
+  github_app_id:
     required: false
-  gh_app_private_key:
+  github_app_private_key:
     required: false
 runs:
   using: composite
@@ -24,12 +24,21 @@ runs:
         exit 1
       env:
         MERGE_METHOD: ${{inputs.merge_method}}
-    - uses: suzuki-shunsuke/github-token-action@a058de0a42e494414cf4c112436d663a06fd16c0 # v0.1.0
+    - uses: suzuki-shunsuke/github-token-action@350d7506222e3a0016491abe85b5c4dd475b67d1 # v0.2.1
       id: token
       with:
-        github_token: ${{inputs.gh_token}}
-        github_app_id: ${{inputs.gh_app_id}}
+        github_token: ${{inputs.github_token}}
+        github_app_id: ${{inputs.github_app_id}}
         github_app_private_key: ${{inputs.gh_app_private_key}}
+        github_app_permissions: >-
+          {
+            "contents": "write",
+            "pull-requests": "write"
+          }
+        github_app_repositories: >-
+          [
+            "${{github.event.repository.name}}",
+          ]
     - run: gh -R "$GITHUB_REPOSITORY" pr merge --${{inputs.merge_method}} --auto --delete-branch "$PR_NUMBER"
       env:
         GITHUB_TOKEN: ${{steps.token.outputs.token}}

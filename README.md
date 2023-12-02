@@ -18,8 +18,8 @@ jobs:
         with:
           pr_number: ${{github.event.pull_request.number}}
           merge_method: squash
-          gh_app_id: ${{secrets.APP_ID}}
-          gh_app_private_key: ${{secrets.APP_PRIVATE_KEY}}
+          github_app_id: ${{secrets.APP_ID}}
+          github_app_private_key: ${{secrets.APP_PRIVATE_KEY}}
 ```
 
 GitHub Actions Token
@@ -28,7 +28,7 @@ GitHub Actions Token
       - uses: suzuki-shunsuke/enable-auto-merge-action@main
         with:
           pr_number: ${{github.event.pull_request.number}}
-          gh_token: ${{github.token}}
+          github_token: ${{github.token}}
 ```
 
 ## LICENSE
